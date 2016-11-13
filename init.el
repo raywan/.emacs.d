@@ -29,6 +29,9 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
+;; Shortcut to quickly access init.el (this file)
+(global-set-key (kbd "C-c I") (lambda () (interactive) (find-file-other-window user-init-file)))
+
 ;; Move the custom.el stuff into it's own file
 ;; I don't want to litter this file
 (setq custom-file "~/.emacs.d/customize.el")
@@ -100,3 +103,20 @@
   :ensure t
   :config
     (global-nlinum-mode 1))
+
+(use-package git-gutter-fringe
+  :ensure t
+  :config
+  (progn
+    (setq-default left-fringe-width 3)
+    (global-git-gutter-mode 1)
+    ;; Using a minimalistic style from https://github.com/hlissner/.emacs.d
+    (define-fringe-bitmap 'git-gutter-fr:added
+	[224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+	nil nil 'center)
+    (define-fringe-bitmap 'git-gutter-fr:modified
+	[224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+	nil nil 'center)
+    (define-fringe-bitmap 'git-gutter-fr:deleted
+	[0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
+	nil nil 'center)))
