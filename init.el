@@ -97,7 +97,8 @@
 	      (rainbow-delimiters-mode))))
 
 (use-package magit
-  :ensure t)
+  :ensure t
+  :config (global-set-key (kbd "C-x g") 'magit-status))
 
 (use-package nlinum
   :ensure t
