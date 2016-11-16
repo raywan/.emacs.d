@@ -3,8 +3,9 @@
 ;; Inspiration from
 ;; https://ogbe.net/emacsconfig.html 
 ;; https://gitlab.com/buildfunthings/emacs-config/blob/master/loader.org
+;; http://pages.sachachua.com/.emacs.d/Sacha.html
 
-;; (require 'cl)
+(require 'cl)
 (require 'package)
 
 (defvar gnu '("gnu" . "https://elpa.gnu.org/packages/"))
@@ -16,7 +17,6 @@
 (add-to-list 'package-archives melpa t)
 (add-to-list 'package-archives gnu t)
 (package-initialize)
-
 
 (unless (and (file-exists-p "~/.emacs.d/elpa/archives/gnu")
              (file-exists-p "~/.emacs.d/elpa/archives/melpa")
@@ -34,7 +34,7 @@
 
 ;; Move the custom.el stuff into it's own file
 ;; I don't want to litter this file
-(setq custom-file "~/.emacs.d/customize.el")
+(setq custom-file "~/.emacs.d/lisp/customize.el")
 (load custom-file)
 
 (set-default-font "Source Code Pro 13")
@@ -66,9 +66,18 @@
 ;; PACKAGES 
 (require 'use-package)
 
-(setq evil-want-C-u-scroll t)
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :config
+  (progn
+    (setq undo-tree-visualizer-timestamps t)
+    (setq undo-tree-visualizer-diff t)
+    (global-undo-tree-mode)))
+  
 (use-package evil
   :ensure t
+  :init (setq evil-want-C-u-scroll t)
   :config
   (progn 
     (evil-mode 1)
@@ -105,8 +114,41 @@
   :config
     (global-nlinum-mode 1))
 
+(use-package helm
+  :ensure t
+  :diminish helm-mode
+  :init
+  (progn
+    (require 'helm-config)
+    (helm-mode))
+  :bind (("M-x" . helm-M-x)))
+
+(use-package projectile
+  :ensure t
+  :diminish projectile-mode
+  :config
+  (progn
+    (setq projectile-keymap-prefix (kbd "C-c p"))
+    (setq projectile-completion-system 'helm)
+    (setq projectile-enable-caching t)
+    (setq projectile-indexing-method 'alien)
+    (projectile-global-mode)))
+
+;; https://tuhdo.github.io/helm-projectile.html
+(use-package helm-projectile
+  :ensure t
+  :config (helm-projectile-on))
+
+;; Fix this 
+;; http://emacs.1067599.n8.nabble.com/Sorry-no-version-of-R-could-be-found-on-your-system-R-x64-2-11-0-on-windows-td238052.html
+;; (use-package ess
+;;   :ensure t
+;;   :init
+;;   (setq-default inferior-R-args "--no-save "))
+
 (use-package git-gutter-fringe
   :ensure t
+  :diminish git-gutter-mode
   :config
   (progn
     (setq-default left-fringe-width 3)

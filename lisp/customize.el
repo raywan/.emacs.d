@@ -8,7 +8,8 @@
     ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
  '(package-selected-packages
    (quote
-    (git-gutter-fringe powerline nlinum magit rainbow-delimiters evil use-package))))
+    (helm-projectile projectile ess git-gutter-fringe powerline nlinum magit rainbow-delimiters evil use-package)))
+ '(projectile-mode t nil (projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
