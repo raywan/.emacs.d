@@ -1,7 +1,7 @@
 ;; Emacs Configurations
 ;; By: Raymond Wan
 ;; Inspiration from
-;; https://ogbe.net/emacsconfig.html 
+;; https://ogbe.net/emacsconfig.html
 ;; https://gitlab.com/buildfunthings/emacs-config/blob/master/loader.org
 ;; http://pages.sachachua.com/.emacs.d/Sacha.html
 
@@ -37,18 +37,22 @@
 (setq custom-file "~/.emacs.d/lisp/customize.el")
 (load custom-file)
 
-(set-default-font "Source Code Pro 13")
+(set-default-font "Hack 13")
 
 ;; Allow window movement using Shift+Arrow keys
 (windmove-default-keybindings)
 
 ;; Remove toolbar and scrollbar
 (tool-bar-mode -1)
-(toggle-scroll-bar -1) 
+(toggle-scroll-bar -1)
 
-;; https://www.emacswiki.org/emacs/LineNumbers
-;; NOTE: Apparently there's a dumb behaviour by enabling line numbering like this
-;; (global-linum-mode 1)
+;; Stop Emacs from losing undo information by setting very high limits for undo buffers
+(setq undo-limit 20000000)
+(setq undo-strong-limit 40000000)
+
+;; Line numbering
+(when (version<= "26.0.50" emacs-version )
+  (global-display-line-numbers-mode))
 
 ;; Make scrolling smooth (Vim-like scrolling)
 (setq scroll-step 1)
@@ -61,105 +65,77 @@
 
 ;; Quick reloading of init.el
 (eval-after-load "Emacs-Lisp"
-  (define-key emacs-lisp-mode-map (kbd "C-c C-b") 'eval-buffer)) 
+  (define-key emacs-lisp-mode-map (kbd "C-c C-b") 'eval-buffer))
 
-;; PACKAGES 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; PACKAGES
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (require 'use-package)
+(require 'cc-mode)
 
 (use-package undo-tree
   :ensure t
-  :diminish undo-tree-mode
+  :config
+  (global-undo-tree-mode))
+
+(use-package evil-leader
+  :ensure t
   :config
   (progn
-    (setq undo-tree-visualizer-timestamps t)
-    (setq undo-tree-visualizer-diff t)
-    (global-undo-tree-mode)))
-  
+    (global-evil-leader-mode)
+    (evil-leader/set-leader ",")
+    (evil-leader/set-key
+      "e" 'find-file
+      "b" 'switch-to-buffer
+      "k" 'kill-buffer)))
+
 (use-package evil
   :ensure t
-  :init (setq evil-want-C-u-scroll t)
+  :init
+  (progn
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-fine-undo t))
   :config
-  (progn 
+  (progn
     (evil-mode 1)
+    (define-key evil-normal-state-map (kbd "C-p") 'helm-find-files)
     (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)))
+
+(use-package gruvbox-theme
+  :ensure t)
+
+;; (use-package magit
+;;   :ensure t
+;;   :config (global-set-key (kbd "C-x g") 'magit-status))
+
+(use-package git-gutter
+  :ensure t
+  :config
+    (global-git-gutter-mode +1))
 
 (use-package powerline
   :ensure t
   :config
-  (setq powerline-arrow-shape 'curve))
-
-(use-package moe-theme 
-  :ensure t
-  :config
-  (progn
-    (powerline-moe-theme)
-    (moe-dark)
-    (moe-theme-set-color 'orange)
-    (setq moe-theme-highlight-buffer-id t)))
-
-
-(use-package rainbow-delimiters
-  :ensure t
-  :config
-  (add-hook 'emacs-lisp-mode-hook
-	    (lambda()
-	      (rainbow-delimiters-mode))))
-
-(use-package magit
-  :ensure t
-  :config (global-set-key (kbd "C-x g") 'magit-status))
-
-(use-package nlinum
-  :ensure t
-  :config
-    (global-nlinum-mode 1))
+    (powerline-center-evil-theme))
 
 (use-package helm
   :ensure t
   :diminish helm-mode
   :init
   (progn
-    (require 'helm-config)
-    (helm-mode))
-  :bind (("M-x" . helm-M-x)))
+    (helm-mode 1))
+  :bind (("M-x" . helm-M-x)
+	 ("C-x C-f" . helm-find-files)))
 
-(use-package projectile
-  :ensure t
-  :diminish projectile-mode
-  :config
-  (progn
-    (setq projectile-keymap-prefix (kbd "C-c p"))
-    (setq projectile-completion-system 'helm)
-    (setq projectile-enable-caching t)
-    (setq projectile-indexing-method 'alien)
-    (projectile-global-mode)))
 
-;; https://tuhdo.github.io/helm-projectile.html
-(use-package helm-projectile
-  :ensure t
-  :config (helm-projectile-on))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; HOOKS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Fix this 
-;; http://emacs.1067599.n8.nabble.com/Sorry-no-version-of-R-could-be-found-on-your-system-R-x64-2-11-0-on-windows-td238052.html
-;; (use-package ess
-;;   :ensure t
-;;   :init
-;;   (setq-default inferior-R-args "--no-save "))
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(use-package git-gutter-fringe
-  :ensure t
-  :diminish git-gutter-mode
-  :config
-  (progn
-    (setq-default left-fringe-width 3)
-    (global-git-gutter-mode 1)
-    ;; Using a minimalistic style from https://github.com/hlissner/.emacs.d
-    (define-fringe-bitmap 'git-gutter-fr:added
-	[224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-	nil nil 'center)
-    (define-fringe-bitmap 'git-gutter-fr:modified
-	[224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-	nil nil 'center)
-    (define-fringe-bitmap 'git-gutter-fr:deleted
-	[0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
-	nil nil 'center)))
+; Map escape to cancel (like C-g)...
+(define-key isearch-mode-map [escape] 'isearch-abort)   ;; isearch
+(define-key isearch-mode-map "\e" 'isearch-abort)   ;; \e seems to work better for terminals
+(global-set-key [escape] 'keyboard-escape-quit)         ;; everywhere else
