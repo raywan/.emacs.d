@@ -4,6 +4,7 @@
 ;; https://ogbe.net/emacsconfig.html
 ;; https://gitlab.com/buildfunthings/emacs-config/blob/master/loader.org
 ;; http://pages.sachachua.com/.emacs.d/Sacha.html
+;; https://juanjoalvarez.net/es/detail/2014/sep/19/vim-emacsevil-chaotic-migration-guide/
 
 (require 'cl)
 (require 'package)
@@ -30,14 +31,18 @@
   (package-install 'use-package))
 
 ;; Shortcut to quickly access init.el (this file)
-(global-set-key (kbd "C-c I") (lambda () (interactive) (find-file-other-window user-init-file)))
+(global-set-key (kbd "C-c I") (lambda ()
+				(interactive)
+				(split-window-horizontally)
+				(other-window 1)
+				(find-file user-init-file)))
 
 ;; Move the custom.el stuff into it's own file
 ;; I don't want to litter this file
 (setq custom-file "~/.emacs.d/lisp/customize.el")
 (load custom-file)
 
-(set-default-font "Hack 13")
+(set-default-font "Hack 14")
 
 ;; Allow window movement using Shift+Arrow keys
 (windmove-default-keybindings)
@@ -67,6 +72,20 @@
 (eval-after-load "Emacs-Lisp"
   (define-key emacs-lisp-mode-map (kbd "C-c C-b") 'eval-buffer))
 
+;; Focus to the new split after creating it
+(global-set-key "\C-x2" (lambda () (interactive)(split-window-vertically) (other-window 1)))
+(global-set-key "\C-x3" (lambda () (interactive)(split-window-horizontally) (other-window 1)))
+
+;; No line wrapping
+(setq-default truncate-lines t)
+
+;; Show matching parenthesis
+(show-paren-mode t)
+
+;; No backup files
+(setq make-backup-files nil)
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -90,6 +109,12 @@
       "b" 'switch-to-buffer
       "k" 'kill-buffer)))
 
+(use-package evil-search-highlight-persist
+  :ensure t
+  :config
+  (progn
+    (global-evil-search-highlight-persist t)))
+
 (use-package evil
   :ensure t
   :init
@@ -99,6 +124,7 @@
   :config
   (progn
     (evil-mode 1)
+    (evil-leader/set-key "SPC" 'evil-search-highlight-persist-remove-all)
     (define-key evil-normal-state-map (kbd "C-p") 'helm-find-files)
     (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)))
 
@@ -139,3 +165,7 @@
 (define-key isearch-mode-map [escape] 'isearch-abort)   ;; isearch
 (define-key isearch-mode-map "\e" 'isearch-abort)   ;; \e seems to work better for terminals
 (global-set-key [escape] 'keyboard-escape-quit)         ;; everywhere else
+
+;; Start fullscreen
+(custom-set-variables
+ '(initial-frame-alist (quote ((fullscreen . maximized)))))
