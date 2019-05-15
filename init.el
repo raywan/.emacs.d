@@ -48,6 +48,7 @@
 (windmove-default-keybindings)
 
 ;; Remove toolbar and scrollbar
+(menu-bar-mode -1)
 (tool-bar-mode -1)
 (toggle-scroll-bar -1)
 
@@ -125,7 +126,7 @@
   (progn
     (evil-mode 1)
     (evil-leader/set-key "SPC" 'evil-search-highlight-persist-remove-all)
-    (define-key evil-normal-state-map (kbd "C-p") 'helm-find-files)
+    (define-key evil-normal-state-map (kbd "C-p") 'helm-projectile-find-file)
     (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)))
 
 (use-package gruvbox-theme
@@ -143,7 +144,7 @@
 (use-package powerline
   :ensure t
   :config
-    (powerline-center-evil-theme))
+    (powerline-vim-theme))
 
 (use-package helm
   :ensure t
@@ -154,6 +155,17 @@
   :bind (("M-x" . helm-M-x)
 	 ("C-x C-f" . helm-find-files)))
 
+(use-package projectile
+  :ensure t
+  :config
+    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (projectile-mode +1))
+
+(use-package helm-projectile
+  :ensure t
+  :config
+    (helm-projectile-on))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; HOOKS
