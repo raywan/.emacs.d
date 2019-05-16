@@ -86,6 +86,10 @@
 ;; No backup files
 (setq make-backup-files nil)
 
+;; Proper forward movement
+;; NOTE(ray): Doesn't work for backwards?
+;; https://emacs.stackexchange.com/questions/9583/how-to-treat-underscore-as-part-of-the-word
+(superword-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PACKAGES
