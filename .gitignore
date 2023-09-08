@@ -203,6 +203,8 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,emacs,windows,macos,linux,visualstudiocode,sublimetext,notepadpp
 
-.cache/
-transient/
-server/
+*cache
+transient
+server
+tree-sitter
+eshell
