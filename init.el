@@ -1,6 +1,7 @@
 ;; Raymond Wan's Emacs Configuration
 ;; Written for Emacs 29
 
+(require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (unless (file-exists-p "~/.emacs.d/elpa")
   (package-refresh-contents))
