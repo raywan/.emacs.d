@@ -11,7 +11,7 @@
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
 
-(set-frame-font "Berkeley Mono 11")
+(set-frame-font "Berkeley Mono 10")
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -47,11 +47,12 @@
 (global-set-key (kbd "C-x 3") (lambda () (interactive) (split-window-horizontally) (other-window 1)))
 (global-set-key (kbd "C-c j") #'duplicate-dwim)
 
+(modus-themes-select 'modus-vivendi-tinted)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; EDITING
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;(setq-default c-basic-offset 4)
 ;;(setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 
@@ -72,22 +73,20 @@
       '((bash-mode . bash-ts-mode)
         (c-mode . c-ts-mode)
         (c++-mode . c++-ts-mode)
-        (cmake-mode . cmake-ts-mode)
+        (Cmake-mode . cmake-ts-mode)
         (js2-mode . js-ts-mode)
         (json-mode . json-ts-mode)
         (css-mode . css-ts-mode)
         (python-mode . python-ts-mode)))
 
+(global-hl-line-mode 1)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package modus-themes
-  :ensure t
-  :config
-  (modus-themes-select 'modus-operandi-tinted)
-  ;;(modus-themes-select 'modus-vivendi-tinted)
-  )
+(use-package ace-window
+  :ensure t)
 
 (use-package undo-tree
   :ensure t
@@ -233,4 +232,4 @@
     '("z" . meow-pop-selection)
     '("'" . repeat)
     '("<escape>" . ignore))
-   (meow-global-mode 1))
+   (meow-global-mode 0))
