@@ -47,7 +47,8 @@
 (global-set-key (kbd "C-x 3") (lambda () (interactive) (split-window-horizontally) (other-window 1)))
 (global-set-key (kbd "C-c j") #'duplicate-dwim)
 
-(modus-themes-select 'modus-vivendi-tinted)
+(global-unset-key "\C-z")
+(global-set-key "\C-z" 'undo)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; EDITING
@@ -84,6 +85,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package modus-themes
+  :ensure t
+  :config
+  (modus-themes-select 'modus-vivendi-tinted))
 
 (use-package ace-window
   :ensure t)
