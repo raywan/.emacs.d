@@ -23,6 +23,8 @@
 (global-auto-revert-mode t)
 (show-paren-mode t)
 
+(setq mac-command-modifier 'meta)
+
 (setq make-backup-files nil)
 (setq global-auto-revert-non-file-buffers t)
 
@@ -43,12 +45,21 @@
 (setq ring-bell-function 'my-bell-function)
 (setq visible-bell nil)
 
-(global-set-key (kbd "C-x 2") (lambda () (interactive) (split-window-vertically) (other-window 1)))
-(global-set-key (kbd "C-x 3") (lambda () (interactive) (split-window-horizontally) (other-window 1)))
+(global-set-key (kbd "C-x 2") (lambda () (interactive) (split-window-horizontally) (other-window 1)))
+(global-set-key (kbd "C-x 3") (lambda () (interactive) (split-window-vertically) (other-window 1)))
 (global-set-key (kbd "C-c j") #'duplicate-dwim)
+
+(global-hl-line-mode 1)
 
 (global-unset-key "\C-z")
 (global-set-key "\C-z" 'undo)
+
+(setq-default cursor-type 'bar)
+
+(global-set-key (kbd "C-<tab>") 'dabbrev-expand)
+(define-key minibuffer-local-map (kbd "C-<tab>") 'dabbrev-expand)
+
+(global-set-key [f12] (lambda () (interactive) (find-file user-init-file)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; EDITING
@@ -67,7 +78,12 @@
         (html "https://github.com/tree-sitter/tree-sitter-html")
         (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
         (json "https://github.com/tree-sitter/tree-sitter-json")
+        (lua "https://github.com/tree-sitter-grammars/tree-sitter-lua")
+        (make "https://github.com/alemuller/tree-sitter-make")
         (python "https://github.com/tree-sitter/tree-sitter-python")
+        (rust "https://github.com/tree-sitter/tree-sitter-rust")    
+        (toml "https://github.com/tree-sitter/tree-sitter-toml")
+        (yaml "https://github.com/ikatyang/tree-sitter-yaml")
         ))
 
 (setq major-mode-remap-alist
@@ -80,7 +96,6 @@
         (css-mode . css-ts-mode)
         (python-mode . python-ts-mode)))
 
-(global-hl-line-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PACKAGES
@@ -89,10 +104,12 @@
 (use-package modus-themes
   :ensure t
   :config
-  (modus-themes-select 'modus-vivendi-tinted))
+  (modus-themes-select 'modus-vivendi))
 
 (use-package ace-window
-  :ensure t)
+  :ensure t
+  :config
+  (global-set-key (kbd "M-o") 'ace-window))
 
 (use-package undo-tree
   :ensure t
@@ -151,6 +168,11 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+(use-package corfu
+  :ensure t
+  :init
+  (global-corfu-mode))
+  
 (use-package meow
    :ensure t
    :config
