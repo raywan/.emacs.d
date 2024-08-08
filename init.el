@@ -54,6 +54,9 @@
 (global-unset-key "\C-z")
 (global-set-key "\C-z" 'undo)
 
+(global-unset-key (kbd "C-x C-c"))
+(global-set-key (kbd "C-x C-q") 'save-buffers-kill-terminal)
+
 (setq-default cursor-type 'bar)
 
 (global-set-key (kbd "C-<tab>") 'dabbrev-expand)
