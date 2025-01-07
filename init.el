@@ -22,6 +22,7 @@
 (pixel-scroll-precision-mode t)
 (global-auto-revert-mode t)
 (show-paren-mode t)
+(global-auto-revert-mode t)
 
 (setq mac-command-modifier 'meta)
 
@@ -117,14 +118,34 @@
 	    (setq-local c-ts-mode-indent-offset 4)
 	    (setq-local c++-ts-mode-indent-offset 4)))
 
+(add-to-list 'auto-mode-alist '("CmakeLists.txt" . cmake-ts-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package ef-themes
+  :ensure t
+  :config
+  ;(ef-themes-select 'ef-bio)
+  ;(ef-themes-select 'ef-dream)
+  ;(ef-themes-select 'ef-melissa-dark)
+  )
+
 (use-package modus-themes
   :ensure t
   :config
-  (modus-themes-select 'modus-vivendi))
+  ;(modus-themes-select 'modus-vivendi)
+  )
+
+(use-package zenburn-theme
+  :ensure t
+  :config
+  (load-theme 'zenburn t)
+  )
+
+(use-package catppuccin-theme
+  :ensure t)
 
 (use-package ace-window
   :ensure t
