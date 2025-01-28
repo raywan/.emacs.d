@@ -11,8 +11,11 @@
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
 
-(set-frame-font "Berkeley Mono 14")
 
+(if (eq system-type 'darwin)
+    (set-frame-font "Berkeley Mono 14")
+  (set-frame-font "Berkeley Mono 11"))
+  
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (toggle-scroll-bar -1)
@@ -54,6 +57,8 @@
 
 (global-unset-key "\C-z")
 (global-set-key "\C-z" 'undo)
+
+(global-unset-key "\M-c")
 
 (global-unset-key (kbd "C-x C-c"))
 (global-set-key (kbd "C-x C-q") 'save-buffers-kill-terminal)
