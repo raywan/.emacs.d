@@ -6,6 +6,14 @@
 (unless (file-exists-p "~/.emacs.d/elpa")
   (package-refresh-contents))
 
+;; Download Evil
+(unless (package-installed-p 'evil)
+  (package-install 'evil))
+
+;; Enable Evil
+(require 'evil)
+(evil-mode 1)
+
 ;; Load path for other packages
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
