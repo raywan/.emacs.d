@@ -31,6 +31,10 @@
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
+(global-set-key (kbd "C-=") #'text-scale-increase)
+(global-set-key (kbd "C--") #'text-scale-decrease)
+(global-set-key (kbd "C-0") #'text-scale-adjust)
+
 ;; Put in ~/.emacs.d/lisp/
 ;; https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el
 (require 'cmake-mode)
@@ -55,3 +59,6 @@
 
 (use-package markdown-mode
   :ensure t) 
+
+(use-package magit
+  :ensure t)
