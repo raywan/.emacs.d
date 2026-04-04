@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/vim,emacs,windows,macos,linux,visualstudiocode,sublimetext,notepadpp
-# Edit at https://www.toptal.com/developers/gitignore?templates=vim,emacs,windows,macos,linux,visualstudiocode,sublimetext,notepadpp
+# Created by https://www.toptal.com/developers/gitignore/api/emacs,linux,macos,windows,sublimetext,vim,visualstudiocode,notepadpp
+# Edit at https://www.toptal.com/developers/gitignore?templates=emacs,linux,macos,windows,sublimetext,vim,visualstudiocode,notepadpp
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
@@ -201,10 +201,12 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/vim,emacs,windows,macos,linux,visualstudiocode,sublimetext,notepadpp
+# End of https://www.toptal.com/developers/gitignore/api/emacs,linux,macos,windows,sublimetext,vim,visualstudiocode,notepadpp
 
 *cache
 transient
 server
 tree-sitter
 eshell
+custom-vars.el
+backups
