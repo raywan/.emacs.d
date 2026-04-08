@@ -13,7 +13,6 @@
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-
 (if (not (eq system-type 'darwin))
     (menu-bar-mode pp-1))
 
@@ -23,6 +22,9 @@
 (global-auto-revert-mode t)
 (show-paren-mode t)
 
+(when (>= emacs-major-version 30)
+  (which-key-mode 1))
+
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
 
@@ -31,9 +33,12 @@
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
-(global-set-key (kbd "C-=") #'text-scale-increase)
-(global-set-key (kbd "C--") #'text-scale-decrease)
-(global-set-key (kbd "C-0") #'text-scale-adjust)
+(global-unset-key (kbd "C-z"))
+(global-set-key (kbd "C-c w") 'visual-line-mode)
+(global-set-key (kbd "C-c r") 'query-replace)
+(global-set-key (kbd "C-c C-r") 'query-replace-regexp)
+(global-set-key (kbd "<f5>") 'recompile)
+(global-set-key (kbd "C-<f5>") 'compile)
 
 ;; Put in ~/.emacs.d/lisp/
 ;; https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el
